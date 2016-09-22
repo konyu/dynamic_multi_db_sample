@@ -12,6 +12,13 @@ class ChanngingCtrlController < ApplicationController
       User.establish_connection :other_development if env_db?
     end
 
+    # has_oneでリレーションも別のDBに保存してい場合は
+    # Addressモデルについてもestablish_connectionで変更してやる必要がある
+    # このコードだと状態だとデフォルトのDBしか参照しないため意図しない挙動になる
+    user.build_address
+    user.address.post_number = '123-4567'
+    user.address.detail = 'develop_db'
+
     if user.save
       render json: { result: true, user: user.attributes }
     else
@@ -29,9 +36,9 @@ class ChanngingCtrlController < ApplicationController
   def env_db?
     normal_db_name = ActiveRecord::Base.configurations[Rails.env.to_s]['database']
     # mysqlやpostgresの場合
-    # normal_db_name == User.connection.current_database
+    normal_db_name == User.connection.current_database
 
     # sqlite3の場合
-    normal_db_name == User.connection.instance_variable_get(:@config)[:database].split('/').last(2).join('/')
+    # normal_db_name == User.connection.instance_variable_get(:@config)[:database].split('/').last(2).join('/')
   end
 end

@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20160921143612) do
 
-  create_table "addrres", force: :cascade do |t|
+  create_table "addresses", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "post_number"
     t.string   "detail"

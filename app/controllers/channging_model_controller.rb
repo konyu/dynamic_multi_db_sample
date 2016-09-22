@@ -11,6 +11,10 @@ class ChanngingModelController < ApplicationController
              OtherDb::User.new(develop_param)
            end
 
+    user.build_address
+    user.address.post_number = '123-4567'
+    user.address.detail = 'other_db'
+
     if user.save
       render json: { result: true, user: user.attributes }
     else
