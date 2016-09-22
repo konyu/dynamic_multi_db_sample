@@ -13,7 +13,7 @@ class ChanngingModelController < ApplicationController
 
     user.build_address
     user.address.post_number = '123-4567'
-    user.address.detail = 'other_db'
+    user.address.detail = 'from_model'
 
     if user.save
       render json: { result: true, user: user.attributes }

@@ -6,18 +6,18 @@ class ChanngingCtrlController < ApplicationController
     # 内容によって振り分けるDBを変更する
     # 一度変更すると、２回めのアクセスでも同じDBを参照してしまうので処理に注意が必要
     # DB接続設定が前回と一緒だったら変更しないようにする
-    if user.name == 'develop_db'
+    if user.name == 'develop_db_controller'
       User.establish_connection Rails.env unless env_db?
-    elsif user.name == 'other_db'
+    elsif user.name == 'other_db_controller'
       User.establish_connection :other_development if env_db?
     end
 
     # has_oneでリレーションも別のDBに保存してい場合は
     # Addressモデルについてもestablish_connectionで変更してやる必要がある
     # このコードだと状態だとデフォルトのDBしか参照しないため意図しない挙動になる
-    user.build_address
-    user.address.post_number = '123-4567'
-    user.address.detail = 'develop_db'
+    # user.build_address
+    # user.address.post_number = '123-4567'
+    # user.address.detail = 'from_contoller'
 
     if user.save
       render json: { result: true, user: user.attributes }
